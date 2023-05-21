@@ -14,7 +14,7 @@ var gaugeTemp = new LinearGauge({
   maxValue: 40,
   colorValueBoxRect: "#049faa",
   colorValueBoxRectEnd: "#049faa",
-  colorValueBoxBackground: "#f1fbfc",
+  colorValueBoxBackground: "#e0e0e0",
   valueDec: 2,
   valueInt: 2,
   majorTicks: [
@@ -37,7 +37,7 @@ var gaugeTemp = new LinearGauge({
           "color": "rgba(200, 50, 50, .75)"
       }
   ],
-  colorPlate: "#fff",
+  colorPlate: "#e0e0e0",
   colorBarProgress: "#CC2936",
   colorBarProgressEnd: "#049faa",
   borderShadowWidth: 0,
@@ -62,7 +62,7 @@ var gaugeHum = new RadialGauge({
   maxValue: 100,
   colorValueBoxRect: "#049faa",
   colorValueBoxRectEnd: "#049faa",
-  colorValueBoxBackground: "#f1fbfc",
+  colorValueBoxBackground: "#e0e0e0",
   valueInt: 2,
   majorTicks: [
       "0",
@@ -82,7 +82,7 @@ var gaugeHum = new RadialGauge({
           "color": "#03C0C1"
       }
   ],
-  colorPlate: "#fff",
+  colorPlate: "#e0e0e0",
   borderShadowWidth: 0,
   borders: false,
   needleType: "line",
