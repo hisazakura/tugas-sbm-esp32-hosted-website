@@ -61,7 +61,6 @@ body {
     box-shadow: inset 5px 5px 7px #9f9f9f,
         inset -5px -5px 7px #ffffff;
     max-width: 400px;
-    width: 400px;
-    height: 400px;
     margin: 20px;
+    padding: 20px;
 }

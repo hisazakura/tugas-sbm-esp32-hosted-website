@@ -7,6 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<title>Tugas Web Server Sensor ESP32</title>
+	<script src="http://cdn.rawgit.com/Mikhus/canvas-gauges/gh-pages/download/2.1.7/all/gauge.min.js"></script>
 </head>
 
 <body>
@@ -20,11 +21,17 @@
 	</div>
 	<div class="line"></div>
 	<div class="main-content">
-		<div class="content"></div>
-		<div class="content"></div>
-		<div class="content"></div>
+		<div class="content">
+			<p class="main-title">Temperature</p>
+			<canvas id="gauge-temperature"></canvas>
+		</div>
+		<div class="content">
+			<p class="main-title">Humidity</p>
+			<canvas id="gauge-humidity"></canvas>
+		</div>
 	</div>
 	<div class="line"></div>
+	<script src="script.js"></script>
 
 </body>
 
