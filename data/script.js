@@ -47,7 +47,7 @@ var gaugeTemp = new LinearGauge({
   needleCircleSize: 7,
   needleCircleOuter: true,
   needleCircleInner: false,
-  animationDuration: 1500,
+  animationDuration: 500,
   animationRule: "linear",
   barWidth: 10,
 }).draw();
@@ -93,7 +93,52 @@ var gaugeHum = new RadialGauge({
   colorNeedleCircleOuter: "#007F80",
   needleCircleOuter: true,
   needleCircleInner: false,
-  animationDuration: 1500,
+  animationDuration: 500,
+  animationRule: "linear"
+}).draw();
+
+// Create Potensio Gauge
+var gaugePot = new RadialGauge({
+  renderTo: 'gauge-potensio',
+  width: 300,
+  height: 300,
+  units: "Potensio",
+  minValue: 0,
+  maxValue: 4095,
+  colorValueBoxRect: "#049faa",
+  colorValueBoxRectEnd: "#049faa",
+  colorValueBoxBackground: "#e0e0e0",
+  valueInt: 2,
+  majorTicks: [
+      "0",
+      "800",
+      "1600",
+      "2400",
+      "3200",
+      "4000"
+
+  ],
+  minorTicks: 4,
+  strokeTicks: true,
+  highlights: [
+      {
+          "from": 3200,
+          "to": 4000,
+          "color": "#03C0C1"
+      }
+  ],
+  colorPlate: "#e0e0e0",
+  borderShadowWidth: 0,
+  borders: false,
+  needleType: "line",
+  colorNeedle: "#007F80",
+  colorNeedleEnd: "#007F80",
+  needleWidth: 2,
+  needleCircleSize: 3,
+  colorNeedleCircleOuter: "#007F80",
+  needleCircleOuter: true,
+  needleCircleInner: false,
+  animationDuration: 1000,
   animationRule: "linear"
 }).draw();
 
@@ -106,8 +151,10 @@ function getReadings(){
       console.log(myObj);
       var temp = myObj.temperature;
       var hum = myObj.humidity;
+      var pot = myObj.potensio;
       gaugeTemp.value = temp;
       gaugeHum.value = hum;
+      gaugePot.value = pot;
     }
   }; 
   xhr.open("GET", "/readings", true);
@@ -137,5 +184,7 @@ if (!!window.EventSource) {
     console.log(myObj);
     gaugeTemp.value = myObj.temperature;
     gaugeHum.value = myObj.humidity;
+    gaugePot.value = myObj.potensio;
+
   }, false);
 }

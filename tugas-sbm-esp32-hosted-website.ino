@@ -11,8 +11,8 @@
 #include <DHTesp.h>
 
 // Replace with your network credentials
-const char* ssid = "Adhyasta";
-const char* password = "juarasatu";
+const char* ssid = "ESP32";
+const char* password = "11111111";
 
 // Create AsyncWebServer object on port 80
 AsyncWebServer server(80);
@@ -25,11 +25,11 @@ JSONVar readings;
 
 // Timer variables
 unsigned long lastTime = 0;
-unsigned long timerDelay = 1000;
+unsigned long timerDelay = 500;
 
 // Create a sensor object
 DHTesp dhtSensor;
-
+  
 // Init DHT
 void initDHT(){
   dhtSensor.setup(15, DHTesp::DHT22); // DHT22 connected to GPIO 4
@@ -40,6 +40,7 @@ String getSensorReadings(){
   TempAndHumidity  data = dhtSensor.getTempAndHumidity();
   readings["temperature"] = String(data.temperature, 2);
   readings["humidity"] =  String(data.humidity, 1);
+  readings["potensio"] = String(analogRead(35));
   String jsonString = JSON.stringify(readings);
   Serial.print(jsonString);
   return jsonString;
