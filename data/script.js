@@ -122,8 +122,8 @@ var gaugePot = new RadialGauge({
   strokeTicks: true,
   highlights: [
       {
-          "from": 3200,
-          "to": 4000,
+          "from": 3270,
+          "to": 4095,
           "color": "#03C0C1"
       }
   ],
