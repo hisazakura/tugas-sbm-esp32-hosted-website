@@ -21,6 +21,8 @@ body {
     padding: 10px;
     color: #767676;
     font-weight: 1000;
+    display: flex;
+    justify-content: center;
 }
 
 .top-bar{
