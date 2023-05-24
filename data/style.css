@@ -1,68 +1,208 @@
-/* CSS Styles */
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+:root {
+	--gauge-width: max(calc(100vw*0.18), 200px);
+	--gauge-thickness: 0.2;
+	--humidity: 0;
+	--temperature: 0;
+	--resistance: 0;
+}
+
+body,
+html {
+	height: 100%;
+}
 
 body {
-    font-family: 'Open Sans', sans-serif;
-    background-color: #e0e0e0;
-    align-self: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	text-align: center;
+	min-height: 100vh;
+	height: 100vh;
+	margin: 0;
+	background: linear-gradient(0deg, rgba(138, 219, 255, 1) 0%, rgba(0, 144, 210, 1) 53%, rgba(82, 93, 203, 1) 100%);
 }
 
-.main-title {
-    border-radius: 20px;
-    background: #e0e0e0;
-    box-shadow: inset 3px 3px 6px #a4a4a4,
-        inset -3px -3px 6px #ffffff;
-    padding: 10px;
-    color: #767676;
-    font-weight: 1000;
-    display: flex;
-    justify-content: center;
+body h1 {
+	font-family: 'Kanit';
+	font-style: italic;
+	color: white;
+	font-size: 50px;
 }
 
-.top-bar{
-    display: flex;
-    align-items:center ;
+.wrapper {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
 }
 
-.line {
-    border-radius: 20px;
-    background: #e0e0e0;
-    box-shadow: inset 1px 1px 2px #a4a4a4,
-        inset -1px -1px 2px #ffffff;
-    margin: 20px;
-    padding: 3px;
-    width: 95vw;
+.container {
+	display: block;
+	margin: 1% auto;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	width: calc(var(--gauge-width)/3*5);
+	height: calc(var(--gauge-width)/3*5);
+	background-color: white;
+	border-radius: calc(var(--gauge-width)/20);
+	overflow: hidden;
+
+	& h1 {
+		position: relative;
+		margin: auto;
+		top: 5%;
+		font-family: 'Montserrat';
+		font-size: calc(var(--gauge-width)/10);
+		font-style: normal;
+		color: black;
+		z-index: 1000;
+	}
 }
 
-.dot {
-    border-radius: 50%;
-    background: #e0e0e0;
-    box-shadow: inset 5px 5px 6px #c5c5c5,
-        inset -5px -5px 6px #fbfbfb;
-    width: 20px;
-    height: 20px;
-    margin: 10px;
+.gauge {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	left: calc(100%/5);
+	top: calc(100%/5);
+	width: var(--gauge-width);
+	height: var(--gauge-width);
+
+
+	& h2 {
+		position: relative;
+		font-family: 'Montserrat';
+		font-size: calc(var(--gauge-width)/10);
+		z-index: 1000;
+	}
+
+	&:before,
+	&:after {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: calc(100% - var(--gauge-thickness)*200%);
+		height: calc(100% - var(--gauge-thickness)*200%);
+		border-radius: 50%;
+	}
+
+	&:before {
+		border: calc(var(--gauge-thickness)*var(--gauge-width)) solid #eee;
+	}
+
+	&:after {
+		border: calc(var(--gauge-thickness)*var(--gauge-width)) solid;
+		border-color: hsl(calc(var(--humidity) * 167 + 31), calc(var(--humidity) * 7% + 93%), calc(56% - var(--humidity) * 15%)) hsl(calc(var(--humidity) * 167 + 31), calc(var(--humidity) * 7% + 93%), calc(56% - var(--humidity) * 15%)) transparent transparent;
+		transform-origin: center;
+		rotate: calc(var(--humidity)*180deg - 225deg);
+		transition: all 2s;
+	}
+
+	.cover {
+		position: absolute;
+		bottom: 0px;
+		left: -1px;
+		width: calc(var(--gauge-width) * 1.01);
+		height: calc(var(--gauge-width) * 0.51);
+		background-color: white;
+		z-index: 100;
+	}
 }
 
-.main-content {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
+.circle-bar {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	left: calc(100%/5);
+	top: calc(100%/5);
+	width: var(--gauge-width);
+	height: var(--gauge-width);
+
+	& h2 {
+		position: relative;
+		font-family: 'Montserrat';
+		font-size: calc(var(--gauge-width)/10);
+		z-index: 1000;
+	}
+
+	&:before,
+	&:after {
+		content: "";
+		position: absolute;
+	}
+
+	&:before {
+		width: 100%;
+		height: 100%;
+		bottom: 0;
+		background-color: #eee;
+		transform-origin: center;
+		border-radius: 50%;
+	}
+
+	&:after {
+		width: 100%;
+		height: calc(var(--temperature)*100%);
+		bottom: 0;
+		background-color: hsl(calc(240*(1 - var(--temperature))), 100%, 50%);
+		transform-origin: center;
+		clip-path: circle(calc(var(--gauge-width)*0.5) at calc(var(--gauge-width)*0.5) calc(var(--gauge-width)*(var(--temperature) - 0.5)));
+		transition: all 2s;
+	}
+
+	.cover {
+		position: absolute;
+		width: calc(100% - var(--gauge-thickness)*200%);
+		height: calc(100% - var(--gauge-thickness)*200%);
+		border-radius: 50%;
+		background-color: white;
+		z-index: 100;
+	}
 }
 
-.content {
-    border-radius: 13px;
-    background: #e0e0e0;
-    box-shadow: inset 5px 5px 7px #9f9f9f,
-        inset -5px -5px 7px #ffffff;
-    max-width: 400px;
-    margin: 20px;
-    padding: 20px;
+.squircle-power {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	left: calc(100%/5);
+	top: calc(100%/5);
+	width: var(--gauge-width);
+	height: var(--gauge-width);
+
+	& h2 {
+		position: relative;
+		font-family: 'Montserrat';
+		font-size: calc(var(--gauge-width)/10);
+		z-index: 1000;
+	}
+
+	&:before,
+	&:after {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		border-radius: 25%;
+	}
+
+	&:before {
+		width: 100%;
+		height: 100%;
+		background-color: hsl(calc(240*(1 - var(--resistance))), 100%, 50%);
+		transition: all 2s;
+	}
+
+	&:after {
+		top: 25%;
+		left: 25%;
+		width: 50%;
+		height: 50%;
+		background-color: white;
+		transform-origin: center;
+		transition: all 2s;
+	}
 }

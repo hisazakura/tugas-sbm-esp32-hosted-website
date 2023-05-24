@@ -6,36 +6,50 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="style.css">
-	<title>Tugas Web Server Sensor ESP32</title>
-	<script src="http://cdn.rawgit.com/Mikhus/canvas-gauges/gh-pages/download/2.1.7/all/gauge.min.js"></script>
+	<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+	<link href='https://fonts.googleapis.com/css?family=Kanit' rel='stylesheet'>
+	<title>ESP32</title>
+	<script src="script.js"></script>
 </head>
 
 <body>
-	<div class="line"></div>
-	<div class="top-bar">
-		<div class="dot"></div>
-		<div class="main-title">
-			Tugas Sistem Berbasis Mikrocontroller (Web-Server)
+	<h1>
+		ESP32 Data Viewer
+	</h1>
+	<div class="wrapper">
+		<div class="container">
+			<h1>
+				Humidity
+			</h1>
+			<div class="gauge" id="humidity-gauge">
+				<div class="cover"></div>
+				<h2 id="humidity-value">
+					NaN
+				</h2>
+			</div>
 		</div>
-		<div class="dot"></div>
+		<div class="container">
+			<h1>
+				Temperature
+			</h1>
+			<div class="circle-bar" id="temperature-gauge">
+				<div class="cover"></div>
+				<h2 id="temperature-value">
+					NaN
+				</h2>
+			</div>
+		</div>
+		<div class="container">
+			<h1>
+				Resistance
+			</h1>
+			<div class="squircle-power" id="resistance-gauge">
+				<h2 id="resistance-value">
+					NaN
+				</h2>
+			</div>
+		</div>
 	</div>
-	<div class="line"></div>
-	<div class="main-content">
-		<div class="content">
-			<p class="main-title">Temperature</p>
-			<canvas id="gauge-temperature"></canvas>
-		</div>
-		<div class="content">
-			<p class="main-title">Humidity</p>
-			<canvas id="gauge-humidity"></canvas>
-		</div>
-		<div class="content">
-			<p class="main-title">Potensio</p>
-			<canvas id="gauge-potensio"></canvas>
-		</div>
-	</div>
-	<div class="line"></div>
-	<script src="script.js"></script>
 
 </body>
 
