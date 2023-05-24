@@ -1,7 +1,3 @@
-
-//  Complete instructions at https://RandomNerdTutorials.com/esp32-web-server-gauges/
-
-
 #include <Arduino.h>
 #include <WiFi.h>
 #include <AsyncTCP.h>
@@ -10,9 +6,12 @@
 #include <Arduino_JSON.h>
 #include <DHTesp.h>
 
+#define DHT_PIN 15
+#define POT_PIN 35
+
 // Replace with your network credentials
-const char* ssid = "ESP32";
-const char* password = "11111111";
+const char* ssid = "Kopi Sebaya";
+const char* password = "americano";
 
 // Create AsyncWebServer object on port 80
 AsyncWebServer server(80);
@@ -30,9 +29,9 @@ unsigned long timerDelay = 500;
 // Create a sensor object
 DHTesp dhtSensor;
   
-// Init DHT
+// Initialize DHT
 void initDHT(){
-  dhtSensor.setup(15, DHTesp::DHT22); // DHT22 connected to GPIO 4
+  dhtSensor.setup(DHT_PIN, DHTesp::DHT22);
 }
 
 // Get Sensor Readings and return JSON object
@@ -40,9 +39,8 @@ String getSensorReadings(){
   TempAndHumidity  data = dhtSensor.getTempAndHumidity();
   readings["temperature"] = String(data.temperature, 2);
   readings["humidity"] =  String(data.humidity, 1);
-  readings["potensio"] = String(analogRead(35));
+  readings["resistance"] = String(analogRead(POT_PIN));
   String jsonString = JSON.stringify(readings);
-  Serial.print(jsonString);
   return jsonString;
 }
 
@@ -63,6 +61,7 @@ void initWiFi() {
     Serial.print('.');
     delay(1000);
   }
+  Serial.println();
   Serial.println(WiFi.localIP());
 }
 

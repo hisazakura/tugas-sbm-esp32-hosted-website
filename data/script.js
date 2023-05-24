@@ -7,19 +7,70 @@ window.addEventListener('load', (event) => {
 	updateHumidity();
 	updateTemperature();
 	updateResistance();
+	setInterval(() => {
+		getReadings();
+	}, 1000);
 });
 
+if (!!window.EventSource) {
+	var source = new EventSource('/events');
+
+	source.addEventListener('open', function (e) {
+		console.log("Events Connected");
+	}, false);
+
+	source.addEventListener('error', function (e) {
+		if (e.target.readyState != EventSource.OPEN) {
+			console.log("Events Disconnected");
+		}
+	}, false);
+
+	source.addEventListener('message', function (e) {
+		console.log("message", e.data);
+	}, false);
+
+	source.addEventListener('new_readings', function (e) {
+		var reading = JSON.parse(e.data);
+		var temperature = parseFloat(reading.temperature) / 100;
+		var humidity = parseFloat(reading.humidity) / 100;
+		var resistance = parseFloat(reading.resistance) / 4095;
+		setHumidity(humidity);
+		setResistance(resistance);
+		setTemperature(temperature);
+	}, false);
+}
+
+function getReadings() {
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function () {
+		if (this.readyState == 4 && this.status == 200) {
+			var reading = JSON.parse(this.responseText);
+			var temperature = parseFloat(reading.temperature) / 100;
+			var humidity = parseFloat(reading.humidity) / 100;
+			var resistance = parseFloat(reading.resistance) / 4095;
+			setHumidity(humidity);
+			setResistance(resistance);
+			setTemperature(temperature);
+		}
+	};
+	xhr.open("GET", "/readings", true);
+	xhr.send();
+}
+
 function setHumidity(val) {
+	if (isNaN(val)) return;
 	document.documentElement.style.setProperty('--humidity', Math.min(Math.max(0, val), 1));
 	updateHumidity();
 }
 
 function setTemperature(val) {
+	if (isNaN(val)) return;
 	document.documentElement.style.setProperty('--temperature', Math.min(Math.max(0, val), 1));
 	updateTemperature();
 }
 
 function setResistance(val) {
+	if (isNaN(val)) return;
 	document.documentElement.style.setProperty('--resistance', Math.min(Math.max(0, val), 1));
 	updateResistance();
 }
