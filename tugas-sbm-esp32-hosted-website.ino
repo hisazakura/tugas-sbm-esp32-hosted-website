@@ -13,8 +13,8 @@
 
 
 // Replace with your network credentials
-const char* ssid = "ESP32";
-const char* password = "11111111";
+const char* ssid = "wifi";
+const char* password = "password_wifi";
 
 //Mqtt server setup
 const char* mqtt_server = "192.168.167.152";
@@ -44,7 +44,7 @@ DHTesp dhtSensor;
   
 // Init DHT
 void initDHT(){
-  dhtSensor.setup(15, DHTesp::DHT22); // DHT22 connected to GPIO 4
+  dhtSensor.setup(15, DHTesp::DHT22); // DHT22 connected to GPIO 15
 }
 
 //Init MQTT
