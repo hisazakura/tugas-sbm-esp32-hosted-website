@@ -9,10 +9,22 @@
 #include "SPIFFS.h"
 #include <Arduino_JSON.h>
 #include <DHTesp.h>
+#include <PubSubClient.h>
+
 
 // Replace with your network credentials
 const char* ssid = "ESP32";
 const char* password = "11111111";
+
+//Mqtt server setup
+const char* mqtt_server = "192.168.167.152";
+
+//Topic setup
+WiFiClient espClient;
+PubSubClient client(espClient);
+#define Temp_TOPIC             "ESP32/temp"
+#define Humi_TOPIC             "ESP32/humi"
+#define Poten_TOPIC            "ESP32/poten"
 
 // Create AsyncWebServer object on port 80
 AsyncWebServer server(80);
@@ -35,12 +47,32 @@ void initDHT(){
   dhtSensor.setup(15, DHTesp::DHT22); // DHT22 connected to GPIO 4
 }
 
+//Init MQTT
+void mqttconnect() {
+  /* Loop until reconnected */
+  while (!client.connected()) {
+    Serial.print("MQTT connecting ...");
+    String clientId = "ESP32Client";
+    if (client.connect(clientId.c_str())) {
+      Serial.println(" Connected");
+    } else {
+      Serial.print("failed, status code =");
+      Serial.print(client.state());
+      Serial.println("try again in 5 seconds");
+      delay(5000);
+    }
+  }
+}
+
 // Get Sensor Readings and return JSON object
 String getSensorReadings(){
   TempAndHumidity  data = dhtSensor.getTempAndHumidity();
   readings["temperature"] = String(data.temperature, 2);
+  client.publish(Temp_TOPIC, readings["temperature"]);
   readings["humidity"] =  String(data.humidity, 1);
+  client.publish(Humi_TOPIC, readings["humidity"]);
   readings["potensio"] = String(analogRead(35));
+  client.publish(Poten_TOPIC, readings["potensio"]);
   String jsonString = JSON.stringify(readings);
   Serial.print(jsonString);
   return jsonString;
@@ -72,6 +104,7 @@ void setup() {
   initDHT();
   initWiFi();
   initSPIFFS();
+  client.setServer(mqtt_server, 1883);
 
   // Web Server Root URL
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
@@ -102,10 +135,14 @@ void setup() {
 }
 
 void loop() {
+  if (!client.connected()) {
+    mqttconnect();
+  }
+  client.loop();
   if ((millis() - lastTime) > timerDelay) {
     // Send Events to the client with the Sensor Readings Every 10 seconds
     events.send("ping", NULL, millis());
     events.send(getSensorReadings().c_str(), "new_readings", millis());
-    lastTime = millis();
+    ;lastTime = millis();
   }
 }
